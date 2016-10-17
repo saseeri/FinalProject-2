@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="d3.min.js"></script>
+    <title>Hajj Data Visualization</title>
+  </head>
+    
+
+  <style>
+      
+      html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+      }
+      
+      #header{
+          background-color: black;
+          width: inherit;
+          height:100px;
+          top:0px;
+          left: 0px;
+          text-align: center;
+      }
+      
+      #font{
+          padding: 0.4em;
+          color: #CBA135;
+          font-size:450%;
+          text-align: center;
+      }
+      
+      #footer{
+          background-color: black;
+          width:inherit;
+          height:100px;
+          bottom:-193px;
+          left: 0px;
+          position:absolute;
+          
+      }
+      
+      #container {
+            width: inherit;
+            height: inherit;
+      }
+      
+      #left {
+          width: 200px;          
+          height: inherit;          
+          float: left;
+         
+      }
+      
+      #right {
+          width: 200px;          
+          height: inherit;          
+          float: right;
+        
+      }
+      
+      #line{
+          background-color: #446653;
+          position: absolute;
+          width:100%;
+          height:15px;
+          top:102px;
+          left: 0px;
+      }
+      
+      #line-2{
+          background-color: #CBA135;
+          position: absolute;
+          width:inherit;
+          height:7px;
+          bottom:93px;
+          left: 0px;
+      }
+      
+      #line-3{
+          background-color: #446653;
+          position: absolute;
+          width:inherit;
+          height:7px;
+          bottom:80px;
+          left: 0px;
+      }
+
+      
+      #chart {
+		  width: 400px;
+		  height: 500px;
+          margin: auto;
+	    }
+
+  </style>
+
+    
+    
+  <body>
+      <header id="header">
+          <div id="font" style="font-family:ParmaPetit-Normal">. . . Pilgrrimage to Mecca . . .</div>
+           <div id="line">     </div>
+      </header>
+      
+        <div id="container">
+        	 	
+        <table id="container" style="border: 0px; border-spacing: 10px">
+          <tr>
+            <td width="25%"></td>
+            <td width="50%" VALIGN = Bottom Align = Center style="background-color: white" >
+                <div style="background-color: #fbf8f0" > 
+                     <p style="text-align: left; padding: 3em">Hajj is an annual Islamic pilgrimage to Mecca, and a mandatory religious duty for Muslims that must be carried out at least once in their lifetime. There are millions of people come every year from all around the world in order to practice Hajj in Mecca. </p>
+                </div>
+                <div id="chart">  </div>
+                <img style="position: absolute; width: 80%; left: 140px;  bottom:-149px" src="data/mecca.png"/>
+
+            </td>
+            <td width="25%"></td>
+          </tr>
+        </table>
+            
+        
+        
+        
+	    </div>
+      
+
+      <footer id="footer">
+        <div id="line-2">     </div>
+        <div id="line-3">     </div>
+      </footer>
+  </body>
+
+  
+  <script>
+  d3.csv("data/candidates.csv", function(error, data) {
+
+  var	parseDate = d3.time.format("%Y").parse;
+
+  data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.number = +d.number;
+  });
+
+  var padding = {top: 20, right: 20, bottom: 20, left: 20},
+        w = 400 - padding.left - padding.right,
+        h = 500 - padding.top - padding.bottom;
+
+  var yScale = d3.scale.ordinal()
+		    .domain(data.map(function(d) { return d.date; }))
+		    .rangeRoundBands([h, 0], .05);
+
+  var xScale = d3.scale.linear()
+		    .domain([0, d3.max(data, function(d) { return d.number; })])
+		    .range([0, w]);
+
+  var svg = d3.select("#chart")
+	      .append("svg")
+        .attr("width", w + padding.left + padding.right)
+        .attr("height", h + padding.top + padding.bottom)
+        .append("g")
+        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");   
+});
+  </script>
+    
+</html>
